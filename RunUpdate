@@ -1,0 +1,19 @@
+#!/bin/bash
+set -ue
+
+# docker run -v $PWD/test.csv:/opt/workdir/file.csv local/updategoogle
+
+if [ $# -ne 1 ]; then 
+    
+    (>&2 echo "where's the file")
+    exit 1
+
+fi
+
+if [[ "$(docker images -q local/updategoogle 2> /dev/null)" == "" ]]; then
+
+    whereami="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    docker build -t local/updategoogle -f "$whereami/Dockerfile" .
+fi
+
+docker run --rm -v $(realpath $1):/opt/workdir/file.csv local/updategoogle 
