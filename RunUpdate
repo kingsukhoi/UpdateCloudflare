@@ -10,8 +10,6 @@ if [ $# -ne 1 ]; then
 
 fi
 
-if [[ "$(docker images -q kingsukhoi/updatedomains 2> /dev/null)" == "" ]]; then
-    docker pull kingsukhoi/updatedomains
-fi
+docker pull kingsukhoi/updatedomains
 
 docker run --rm -v $(realpath $1):/opt/workdir/file.csv kingsukhoi/updatedomains 
