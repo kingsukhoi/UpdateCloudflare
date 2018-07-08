@@ -1,6 +1,6 @@
-FROM python:latest
+FROM python:3-alpine
 
-RUN mkdir /opt/workdir
+RUN mkdir -p /opt/workdir
 
 WORKDIR /opt/workdir
 
