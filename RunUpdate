@@ -10,10 +10,8 @@ if [ $# -ne 1 ]; then
 
 fi
 
-if [[ "$(docker images -q local/updategoogle 2> /dev/null)" == "" ]]; then
-
-    whereami="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    docker build -t local/updategoogle -f "$whereami/Dockerfile" .
+if [[ "$(docker images -q kingsukhoi/updatedomains 2> /dev/null)" == "" ]]; then
+    docker pull kingsukhoi/updatedomains
 fi
 
-docker run --rm -v $(realpath $1):/opt/workdir/file.csv local/updategoogle 
+docker run --rm -v $(realpath $1):/opt/workdir/file.csv kingsukhoi/updatedomains 
