@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
 
 main(){
-    if [ $# -ne 1 ]; then
+    #SECRETS_LOC
+    if [ -f $SECRETS_LOC ]; then
         (>&2 echo "file not found")
+        exit 1
     fi
 
-    file_loc="$1"
-
-    watch -n 1200 python /opt/workdir/driver.py "${file_loc}"
+    watch -n 1200 python /opt/workdir/driver.py "$SECRETS_LOC"
 }
 
-main "$@"
+main
