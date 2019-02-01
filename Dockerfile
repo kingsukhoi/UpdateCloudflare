@@ -4,6 +4,7 @@ RUN mkdir -p /opt/workdir
 
 WORKDIR /opt/workdir
 
+COPY ./entrypoint.sh /entrypoint.sh
 COPY ./driver.py /opt/workdir
 
-ENTRYPOINT python /opt/workdir/driver.py
+ENTRYPOINT /entrypoint.sh
