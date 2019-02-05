@@ -9,10 +9,19 @@ email = ''
 api_key = ''
 ip = ''
 dns_entries = []
+zone_name = ''
 zone_id = ''
 
 
 # This script will receive the names of the entries from the file , and replace them with the Cloud Flare ID's
+
+class DNS:
+    fqdn = ''
+    id = ''
+
+    def __init__(self, fqdn, id):
+        self.fqdn = fqdn
+        self.id = id
 
 
 # make a new cloudflare request
@@ -27,7 +36,7 @@ def get_zone():
     data = json.loads(response.text)
     global zone_id
     for elem in data["result"]:
-        if elem['name'] == zone_id:
+        if elem['name'] == zone_name:
             zone_id = elem['id']
 
 
@@ -40,7 +49,7 @@ def get_record_ids():
     global dns_entries
     for curr in data:
         if curr['name'] in dns_entries:
-            new_entries.append(curr["id"])
+            new_entries.append(DNS(curr['name'], curr['id']))
     dns_entries = new_entries
 
 
@@ -57,10 +66,21 @@ def read_config(file_loc):
         email = data["email"]
         global api_key
         api_key = data["api_key"]
-        global zone_id
-        zone_id = data["zone"]["name"]
+        global zone_name
+        zone_name = data["zone"]["name"]
         global dns_entries
         dns_entries = data["zone"]["A"]
+
+
+# make the request to cloud flare
+# json format {"type":"A","name": fqdn,"content":"127.0.0.1"}
+def set_dns_records():
+    for curr in dns_entries:
+        url = f"https://api.cloudflare.com/client/v4/zones/{zone_id}/dns_records/{curr.id}"
+        payload = {'type': 'A', 'name': curr.fqdn, 'content': ip}
+        data = requests.put(url, headers=get_headers(), data=json.dumps(payload))
+        if data.status_code != 200:
+            print(f"{curr.fqdn} failed to update", file=sys.stderr)
 
 
 def main():
@@ -71,6 +91,8 @@ def main():
     read_config(sys.argv[1])
     get_zone()
     get_record_ids()
+
+    set_dns_records()
 
 
 main()
