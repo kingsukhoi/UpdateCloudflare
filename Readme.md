@@ -20,4 +20,4 @@ The reason there is a docker image, is because I am working at making a fully co
 
 
 # TODO
-- [] Add example json config 
+- [ ] Add example json config 
