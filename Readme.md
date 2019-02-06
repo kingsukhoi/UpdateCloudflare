@@ -4,7 +4,7 @@ This program is designed to take list of FQDN to update in CloudFlare and update
 # How to run
 
 ## Without Docker
- `./driver.py <location of confiTg.json>`
+ `./driver.py <location of config.json>`
  
 ## With docker
 This is designed to work with Docker Secrets, due to the fact that the majority of the data is sensitive. 
