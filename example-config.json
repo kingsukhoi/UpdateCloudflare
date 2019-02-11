@@ -1,0 +1,12 @@
+{
+  "email": "Your@email.here",
+  "api_key": "Your origin api key",
+  "zone": {
+    "name": "zone.name",
+    "A": [
+      "uno.zone.name",
+      "dos.zone.name",
+      "tres.zone.name"
+    ]
+  }
+}
